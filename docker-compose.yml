@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  flyway:
+    image: flyway/flyway
+    command: -configFiles=/run/secrets/flyway-config migrate
+    depends_on:
+      - postgres
+    environment:
+      FLYWAY_CONNECT_RETRIES: 5
+      FLYWAY_CREATE_SCHEMAS: "false"
+      FLYWAY_PLACEHOLDERS_ENV: "development"
+      FLYWAY_SCHEMAS: flyway,api
+      FLYWAY_URL: jdbc:postgresql://postgres:5432/xw
+      FLYWAY_USER: flyway
+    volumes:
+      - ./flyway/sql:/flyway/sql
+    secrets:
+      - flyway-config
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      API_PASSWORD: /run/secrets/api-password
+      FLYWAY_PASSWORD: /run/secrets/flyway-password
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-password
+      POSTGRES_USER: postgres
+    secrets:
+      - postgres-password
+      - api-password
+      - flyway-password
+secrets:
+  flyway-config:
+    file: ./flyway/secrets/flyway.conf
+  postgres-password:
+    file: ./postgres/secrets/POSTGRES_PASSWORD
+  api-password:
+    file: ./postgres/secrets/API_PASSWORD
+  flyway-password:
+    file: ./postgres/secrets/FLYWAY_PASSWORD

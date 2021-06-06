@@ -1,0 +1,7 @@
+@import '~@blueprintjs/core/lib/scss/variables';
+
+.layout {
+  margin: $pt-grid-size * 4 auto;
+  max-width: 640px;
+  padding: 0 $pt-grid-size * 4;
+}

@@ -1,0 +1,8 @@
+CREATE TABLE api.clue (
+  id INT GENERATED ALWAYS AS IDENTITY,
+  answer TEXT NOT NULL,
+  clue TEXT,
+  notes TEXT
+);
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE api.clue TO api;

@@ -1,0 +1,7 @@
+@import '~@blueprintjs/core/lib/scss/variables';
+
+.clue-card__text {
+  align-items: center;
+  display: flex;
+  height: $pt-grid-size * 2;
+}

@@ -1,0 +1,12 @@
+@import '~@blueprintjs/core/lib/scss/variables';
+
+// consistent height for icons and spinner
+.query-state {
+  .#{$ns}-icon {
+    line-height: $pt-grid-size * 6;
+  }
+  .#{$ns}-non-ideal-state-visual {
+    font-size: unset;
+    margin-top: $pt-grid-size * 2;
+  }
+}

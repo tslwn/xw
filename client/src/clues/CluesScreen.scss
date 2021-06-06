@@ -1,0 +1,5 @@
+@import '~@blueprintjs/core/lib/scss/variables';
+
+.clues-screen > .clue-card + .clue-card {
+  margin-top: $pt-grid-size;
+}

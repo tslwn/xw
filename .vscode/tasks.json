@@ -1,0 +1,64 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "docker compose up",
+      "problemMatcher": [],
+      "label": "dev db start"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose up --build",
+      "problemMatcher": [],
+      "label": "dev db build"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose down",
+      "problemMatcher": [],
+      "label": "dev db stop"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose run flyway -password=$(cat ./postgres/secrets/FLYWAY_PASSWORD) clean",
+      "problemMatcher": [],
+      "label": "dev db clean"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose run flyway -password=$(cat ./postgres/secrets/FLYWAY_PASSWORD) migrate",
+      "problemMatcher": [],
+      "label": "dev db migrate"
+    },
+    {
+      "type": "cargo",
+      "command": "build",
+      "problemMatcher": [
+        "$rustc"
+      ],
+      "options": {
+        "cwd": "${workspaceRoot}/api"
+      },
+      "group": "build",
+      "label": "dev api build"
+    },
+    {
+      "type": "cargo",
+      "command": "run",
+      "problemMatcher": [
+        "$rustc"
+      ],
+      "options": {
+        "cwd": "${workspaceRoot}/api"
+      },
+      "label": "dev api run"
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "path": "client/",
+      "label": "dev client start"
+    }
+  ]
+}
