@@ -1,8 +1,12 @@
+import { IconNames, Icons } from '@blueprintjs/icons';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import AppProviders from './AppProviders';
 import reportWebVitals from './reportWebVitals';
+
+// https://blueprintjs.com/docs/versions/4/#icons/loading-icons
+Icons.load([IconNames.Error, IconNames.Offline, IconNames.Updated]);
 
 ReactDOM.render(
   <React.StrictMode>

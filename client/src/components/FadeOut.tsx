@@ -4,9 +4,13 @@ import './FadeOut.scss';
 
 interface FadeOutProps {
   children: React.ReactNode;
+  className?: string;
 }
 
-export default function FadeOut({ children }: FadeOutProps): JSX.Element {
+export default function FadeOut({
+  children,
+  className,
+}: FadeOutProps): JSX.Element {
   const ref = React.useRef(null);
 
   const [show, setShow] = React.useState(true);
@@ -23,7 +27,9 @@ export default function FadeOut({ children }: FadeOutProps): JSX.Element {
       timeout={1000}
       unmountOnExit
     >
-      <div ref={ref}>{children}</div>
+      <div className={className} ref={ref}>
+        {children}
+      </div>
     </CSSTransition>
   );
 }

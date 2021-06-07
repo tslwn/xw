@@ -33,26 +33,22 @@ export default function MutationStatusIndicator<
       );
     case 'error':
       return (
-        <FadeOut>
-          <div className="mutation-status-indicator">
-            <Icon
-              icon={IconNames.Error}
-              intent={Intent.DANGER}
-              size={ICON_SIZE_LARGE}
-            />
-          </div>
+        <FadeOut className="mutation-status-indicator">
+          <Icon
+            icon={IconNames.Error}
+            intent={Intent.DANGER}
+            size={ICON_SIZE_LARGE}
+          />
         </FadeOut>
       );
     case 'success':
       return (
-        <FadeOut>
-          <div className="mutation-status-indicator">
-            <Icon
-              icon={IconNames.Tick}
-              intent={Intent.SUCCESS}
-              size={ICON_SIZE_LARGE}
-            />
-          </div>
+        <FadeOut className="mutation-status-indicator">
+          <Icon
+            icon={IconNames.Updated}
+            intent={Intent.SUCCESS}
+            size={ICON_SIZE_LARGE}
+          />
         </FadeOut>
       );
   }
