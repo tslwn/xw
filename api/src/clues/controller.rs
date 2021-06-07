@@ -1,5 +1,5 @@
 use super::{Clue, CreateClueDto, UpdateClueDto};
-use actix_web::{delete, get, patch, post, web, HttpResponse, Responder};
+use actix_web::{delete, get, post, put, web, HttpResponse, Responder};
 use sqlx::PgPool;
 
 #[get("/clues")]
@@ -33,7 +33,7 @@ async fn create(clue: web::Json<CreateClueDto>, pool: web::Data<PgPool>) -> impl
     }
 }
 
-#[patch("/clues/{id}")]
+#[put("/clues/{id}")]
 async fn update(
     id: web::Path<i32>,
     clue: web::Json<UpdateClueDto>,

@@ -9,7 +9,8 @@ type State = Omit<Clue, 'id'>;
 
 type Action =
   | { type: 'SET_ANSWER'; payload: Clue['answer'] }
-  | { type: 'SET_CLUE'; payload: Clue['clue'] };
+  | { type: 'SET_CLUE'; payload: Clue['clue'] }
+  | { type: 'SET_NOTES'; payload: Clue['notes'] };
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -17,6 +18,8 @@ function reducer(state: State, action: Action) {
       return { ...state, answer: action.payload };
     case 'SET_CLUE':
       return { ...state, clue: action.payload };
+    case 'SET_NOTES':
+      return { ...state, notes: action.payload };
   }
 }
 
@@ -55,14 +58,32 @@ function useClueCard(clue: Clue) {
     [rest.clue, state, updateClueMutation]
   );
 
+  const updateNotesMutation = useUpdateClue(id);
+
+  const handleNotesChange = React.useCallback((value: string) => {
+    dispatch({ payload: value, type: 'SET_NOTES' });
+  }, []);
+
+  const handleNotesConfirm = React.useCallback(
+    (value: string) => {
+      if (value !== rest.notes) {
+        updateNotesMutation.mutate({ ...state, notes: value });
+      }
+    },
+    [rest.notes, state, updateNotesMutation]
+  );
+
   return {
     handleAnswerChange,
     handleAnswerConfirm,
     handleClueChange,
     handleClueConfirm,
+    handleNotesChange,
+    handleNotesConfirm,
     state,
     updateAnswerMutation,
     updateClueMutation,
+    updateNotesMutation,
   };
 }
 
@@ -76,9 +97,12 @@ export default function ClueCard({ clue }: ClueProps) {
     handleAnswerConfirm,
     handleClueChange,
     handleClueConfirm,
+    handleNotesChange,
+    handleNotesConfirm,
     state,
     updateAnswerMutation,
     updateClueMutation,
+    updateNotesMutation,
   } = useClueCard(clue);
 
   return (
@@ -97,9 +121,21 @@ export default function ClueCard({ clue }: ClueProps) {
           disabled={updateClueMutation.isLoading}
           onChange={handleClueChange}
           onConfirm={handleClueConfirm}
+          placeholder="Edit clue"
           value={state.clue}
         />
         <MutationStatusIndicator mutation={updateClueMutation} />
+      </Text>
+      <Text className="clue-card__multiline">
+        <EditableText
+          disabled={updateNotesMutation.isLoading}
+          multiline
+          onChange={handleNotesChange}
+          onConfirm={handleNotesConfirm}
+          placeholder="Edit notes"
+          value={state.notes}
+        />
+        <MutationStatusIndicator mutation={updateNotesMutation} />
       </Text>
     </Card>
   );

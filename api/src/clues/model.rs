@@ -64,7 +64,7 @@ impl Clue {
     pub async fn update(id: i32, clue: UpdateClueDto, pool: &PgPool) -> Result<Clue, Error> {
         let result = sqlx::query_as!(
             Clue,
-            "UPDATE api.clue SET answer = COALESCE($2, answer), clue = COALESCE($3, clue), notes = COALESCE($4, notes) WHERE id = $1 RETURNING id, answer, clue, notes",
+            "UPDATE api.clue SET answer = $2, clue = $3, notes = $4 WHERE id = $1 RETURNING id, answer, clue, notes",
             &id,
             clue.answer,
             clue.clue,

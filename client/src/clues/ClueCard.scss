@@ -1,7 +1,32 @@
 @import '~@blueprintjs/core/lib/scss/variables';
 
+.clue-card__multiline {
+  min-height: $pt-grid-size * 2;
+  position: relative;
+  > .mutation-status-indicator {
+    --indicator-padding: 2px;
+    background-color: white;
+    border-radius: 50%;
+    padding: var(--indicator-padding);
+    position: absolute;
+    right: calc(var(--indicator-padding) * -1);
+    top: calc(var(--indicator-padding) * -1);
+  }
+  .#{$ns}-editable-text-content,
+  .#{$ns}-editable-text-input {
+    line-height: 20px;
+  }
+}
 .clue-card__text {
   align-items: center;
   display: flex;
-  height: $pt-grid-size * 2;
+  margin-bottom: $pt-grid-size;
+  max-width: calc(100% - 30px);
+  min-height: $pt-grid-size * 2;
+  > .mutation-status-indicator {
+    margin-left: $pt-grid-size;
+  }
+  .#{$ns}-editable-text-content {
+    max-width: unset;
+  }
 }

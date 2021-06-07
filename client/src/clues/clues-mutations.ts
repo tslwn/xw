@@ -31,7 +31,7 @@ export function useUpdateClue(
 
   return useMutation({
     ...options,
-    mutationFn: (variables) => api.patch(uris.clue(id), variables),
+    mutationFn: (variables) => api.put(uris.clue(id), variables),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries(queryKeys.clues);
 
