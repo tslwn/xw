@@ -10,6 +10,12 @@ API_URL=127.0.0.1:8080
 DATABASE_URL=postgres://api:<API_PASSWORD>@localhost:5432/xw
 ```
 
+`api/.env.test`
+```
+API_URL=127.0.0.1:8080
+DATABASE_URL=postgres://api:<API_PASSWORD>@localhost:54321/xw
+```
+
 `client/.env`
 ```
 REACT_APP_API_URL=http://localhost:3000/api

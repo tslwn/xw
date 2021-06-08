@@ -1,6 +1,7 @@
 use actix_web::{web, App, HttpServer};
 use anyhow::Result;
 use sqlx::PgPool;
+mod api_result;
 
 #[path = "clues/mod.rs"]
 mod clues;

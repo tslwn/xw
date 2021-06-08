@@ -235,6 +235,7 @@ checksum = "28b2cd92db5cbd74e8e5028f7e27dd7aa3090e89e4f2a197cc7c8dfb69c7063b"
 name = "api"
 version = "0.1.0"
 dependencies = [
+ "actix-rt",
  "actix-web",
  "anyhow",
  "dotenv",
@@ -242,6 +243,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sqlx",
+ "thiserror",
 ]
 
 [[package]]

@@ -1,6 +1,6 @@
 DO $$DECLARE env TEXT := '${env}';
 BEGIN
-  IF env = 'development' AND NOT EXISTS (SELECT * FROM api.clue) THEN
+  IF env IN ('development', 'test') AND NOT EXISTS (SELECT * FROM api.clue) THEN
     -- https://www.theguardian.com/crosswords/prize/28458
     INSERT INTO api.clue (answer, clue, notes) VALUES (
       'carroty',
