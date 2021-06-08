@@ -2,36 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "shell",
-      "command": "docker compose up",
-      "problemMatcher": [],
-      "label": "dev db start"
-    },
-    {
-      "type": "shell",
-      "command": "docker compose up --build",
-      "problemMatcher": [],
-      "label": "dev db build"
-    },
-    {
-      "type": "shell",
-      "command": "docker compose down",
-      "problemMatcher": [],
-      "label": "dev db stop"
-    },
-    {
-      "type": "shell",
-      "command": "docker compose run flyway -password=$(cat ./postgres/secrets/FLYWAY_PASSWORD) clean",
-      "problemMatcher": [],
-      "label": "dev db clean"
-    },
-    {
-      "type": "shell",
-      "command": "docker compose run flyway -password=$(cat ./postgres/secrets/FLYWAY_PASSWORD) migrate",
-      "problemMatcher": [],
-      "label": "dev db migrate"
-    },
-    {
       "type": "cargo",
       "command": "build",
       "problemMatcher": [
@@ -59,6 +29,54 @@
       "script": "start",
       "path": "client/",
       "label": "dev client start"
-    }
+    },
+    {
+      "type": "shell",
+      "command": "docker compose -p xw-dev up --build",
+      "problemMatcher": [],
+      "label": "dev db build"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose -p xw-dev run flyway -password=$(cat ./postgres/secrets/FLYWAY_PASSWORD) clean",
+      "problemMatcher": [],
+      "label": "dev db clean"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose -p xw-dev run flyway -password=$(cat ./postgres/secrets/FLYWAY_PASSWORD) migrate",
+      "problemMatcher": [],
+      "label": "dev db migrate"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose -p xw-dev up",
+      "problemMatcher": [],
+      "label": "dev db start"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose -p xw-dev down",
+      "problemMatcher": [],
+      "label": "dev db stop"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose -p xw-test -f docker-compose.yml -f docker-compose.test.yml up --build",
+      "problemMatcher": [],
+      "label": "test db build"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose -p xw-test -f docker-compose.yml -f docker-compose.test.yml up",
+      "problemMatcher": [],
+      "label": "test db start"
+    },
+    {
+      "type": "shell",
+      "command": "docker compose -p xw-test -f docker-compose.yml -f docker-compose.test.yml down",
+      "problemMatcher": [],
+      "label": "test db stop"
+    },
   ]
 }

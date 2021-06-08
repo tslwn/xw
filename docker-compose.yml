@@ -16,6 +16,8 @@ services:
       - ./flyway/sql:/flyway/sql
     secrets:
       - flyway-config
+    networks:
+      - development
   postgres:
     build:
       context: ./postgres
@@ -32,6 +34,8 @@ services:
       - postgres-password
       - api-password
       - flyway-password
+    networks:
+      - development
 secrets:
   flyway-config:
     file: ./flyway/secrets/flyway.conf
@@ -41,3 +45,5 @@ secrets:
     file: ./postgres/secrets/API_PASSWORD
   flyway-password:
     file: ./postgres/secrets/FLYWAY_PASSWORD
+networks:
+  development:

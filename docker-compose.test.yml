@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  flyway:
+    environment:
+      FLYWAY_PLACEHOLDERS_ENV: "test"
+    networks:
+      - test
+  postgres:
+    ports:
+      - 54321:5432
+    networks:
+      - test
+networks:
+  test:
