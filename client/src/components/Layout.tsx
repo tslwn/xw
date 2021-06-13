@@ -4,16 +4,10 @@ import './Layout.scss';
 interface LayoutProps {
   children: React.ReactNode;
   heading: React.ReactNode;
-  className?: string;
   sidebar?: React.ReactNode;
 }
 
-export default function Layout({
-  children,
-  className,
-  heading,
-  sidebar,
-}: LayoutProps) {
+export default function Layout({ children, heading, sidebar }: LayoutProps) {
   return (
     <>
       <div className="layout__heading">{heading}</div>

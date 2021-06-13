@@ -40,10 +40,6 @@ const initialState = {
 function useCreateClueForm() {
   const navigate = useNavigate();
 
-  const handleCancelClick = () => {
-    navigate(-1);
-  };
-
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const handleAnswerChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback(
@@ -77,6 +73,10 @@ function useCreateClueForm() {
 
   const handleCreateClick = () => {
     createMutation.mutate(state);
+  };
+
+  const handleCancelClick = () => {
+    navigate(routes.clues);
   };
 
   return {

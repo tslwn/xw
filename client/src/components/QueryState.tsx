@@ -4,7 +4,7 @@ import * as React from 'react';
 import './QueryState.scss';
 
 interface QueryStateProps {
-  onActionClick?: () => void;
+  onActionClick: () => void;
   status: 'idle' | 'loading' | 'error';
   title?: string;
 }
@@ -38,7 +38,11 @@ export default function QueryState({
                 Cancel
               </Button>
             }
-            icon={<Spinner size={60} />}
+            icon={
+              <div data-testid="spinner">
+                <Spinner size={60} />
+              </div>
+            }
             title={title}
           />
         </div>

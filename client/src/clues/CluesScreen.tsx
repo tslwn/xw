@@ -8,36 +8,38 @@ import CluesTable from './CluesTable';
 import { queryKeys, routes } from './clues-constants';
 import { useClues } from './clues-queries';
 
-export default function CluesScreen() {
+function useCluesScreen() {
   const query = useClues();
 
   const queryClient = useQueryClient();
 
+  const handleRefetch = () => {
+    query.refetch();
+  };
+
+  const handleCancel = () => {
+    queryClient.cancelQueries(queryKeys.clues);
+  };
+
+  return {
+    handleCancel,
+    handleRefetch,
+    query,
+  };
+}
+
+export default function CluesScreen() {
+  const { handleCancel, handleRefetch, query } = useCluesScreen();
+
   switch (query.status) {
     case 'idle':
-      return (
-        <QueryState
-          onActionClick={() => {
-            query.refetch();
-          }}
-          status="idle"
-        />
-      );
+      return <QueryState onActionClick={handleRefetch} status="idle" />;
     case 'loading':
-      return (
-        <QueryState
-          onActionClick={() => {
-            queryClient.cancelQueries(queryKeys.clues);
-          }}
-          status="loading"
-        />
-      );
+      return <QueryState onActionClick={handleCancel} status="loading" />;
     case 'error':
       return (
         <QueryState
-          onActionClick={() => {
-            query.refetch();
-          }}
+          onActionClick={handleRefetch}
           status="error"
           title="An error occurred."
         />

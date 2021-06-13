@@ -96,51 +96,49 @@ export default function UpdateClueForm({ clue }: ClueProps) {
   } = useUpdateClueForm(clue);
 
   return (
-    <div className="update-clue-form">
+    <form>
       <Heading
         right={<LargeButtonLink to={routes.clues}>Back</LargeButtonLink>}
       >
         <H2>{clue.answer}</H2>
       </Heading>
-      <form>
-        <FormGroup label="Clue" labelFor="clue">
-          <InputGroup
-            disabled={deleteMutation.isLoading || updateMutation.isLoading}
-            id="clue"
-            onChange={handleClueChange}
-            value={state.clue}
-          />
-        </FormGroup>
-        <FormGroup label="Notes" labelFor="notes">
-          <TextArea
-            disabled={deleteMutation.isLoading || updateMutation.isLoading}
-            fill
-            id="notes"
-            onChange={handleNotesChange}
-            value={state.notes}
-          />
-        </FormGroup>
-        <div className="update-clue-form__actions">
-          <Button
-            disabled={deleteMutation.isLoading || !isDirty}
-            intent={Intent.PRIMARY}
-            large
-            loading={updateMutation.isLoading}
-            minimal
-            onClick={handleSaveClick}
-            text="Save"
-          />
-          <Button
-            disabled={updateMutation.isLoading}
-            intent={Intent.DANGER}
-            large
-            loading={deleteMutation.isLoading}
-            minimal
-            onClick={handleDeleteClick}
-            text="Delete"
-          />
-        </div>
-      </form>
-    </div>
+      <FormGroup label="Clue" labelFor="clue">
+        <InputGroup
+          disabled={deleteMutation.isLoading || updateMutation.isLoading}
+          id="clue"
+          onChange={handleClueChange}
+          value={state.clue}
+        />
+      </FormGroup>
+      <FormGroup label="Notes" labelFor="notes">
+        <TextArea
+          disabled={deleteMutation.isLoading || updateMutation.isLoading}
+          fill
+          id="notes"
+          onChange={handleNotesChange}
+          value={state.notes}
+        />
+      </FormGroup>
+      <div className="update-clue-form__actions">
+        <Button
+          disabled={deleteMutation.isLoading || !isDirty}
+          intent={Intent.PRIMARY}
+          large
+          loading={updateMutation.isLoading}
+          minimal
+          onClick={handleSaveClick}
+          text="Save"
+        />
+        <Button
+          disabled={updateMutation.isLoading}
+          intent={Intent.DANGER}
+          large
+          loading={deleteMutation.isLoading}
+          minimal
+          onClick={handleDeleteClick}
+          text="Delete"
+        />
+      </div>
+    </form>
   );
 }
