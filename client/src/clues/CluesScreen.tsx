@@ -1,9 +1,11 @@
+import { Classes, H2 } from '@blueprintjs/core';
 import * as React from 'react';
 import { useQueryClient } from 'react-query';
+import Heading from '../components/Heading';
+import LargeButtonLink from '../components/LargeButtonLink';
 import QueryState from '../components/QueryState';
-import './CluesScreen.scss';
 import CluesTable from './CluesTable';
-import { queryKeys } from './clues-constants';
+import { queryKeys, routes } from './clues-constants';
 import { useClues } from './clues-queries';
 
 export default function CluesScreen() {
@@ -41,6 +43,22 @@ export default function CluesScreen() {
         />
       );
     case 'success':
-      return <CluesTable clues={query.data} />;
+      return (
+        <>
+          <Heading
+            right={
+              <LargeButtonLink
+                className={Classes.INTENT_PRIMARY}
+                to={routes.new}
+              >
+                Create
+              </LargeButtonLink>
+            }
+          >
+            <H2>Clues</H2>
+          </Heading>
+          <CluesTable clues={query.data} />
+        </>
+      );
   }
 }

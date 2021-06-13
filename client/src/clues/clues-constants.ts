@@ -17,4 +17,5 @@ const ROUTE = `/${URI}`;
 export const routes = {
   clues: ROUTE,
   clue: (id: number) => `${ROUTE}/${id}`,
+  new: `${ROUTE}/new`,
 };
