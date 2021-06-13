@@ -1,9 +1,11 @@
+import { H2 } from '@blueprintjs/core';
 import * as React from 'react';
 import { useQueryClient } from 'react-query';
 import Layout from '../components/Layout';
 import QueryState from '../components/QueryState';
 import ClueCard from './ClueCard';
 import './CluesScreen.scss';
+import CreateClueForm from './CreateClueForm';
 import { queryKeys } from './clues-constants';
 import { useClues } from './clues-queries';
 
@@ -52,7 +54,8 @@ export default function CluesScreen() {
     case 'success':
       return (
         <Layout className="clues-screen">
-          <h1>Clues</h1>
+          <H2>Clues</H2>
+          <CreateClueForm />
           {query.data.map((clue) => (
             <ClueCard clue={clue} key={clue.id} />
           ))}

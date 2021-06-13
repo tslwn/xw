@@ -1,0 +1,10 @@
+@import '~@blueprintjs/core/lib/scss/variables';
+
+.create-clue-form {
+  align-items: center;
+  display: flex;
+  margin-bottom: $pt-grid-size;
+}
+.create-clue-form__button {
+  margin-left: $pt-grid-size;
+}

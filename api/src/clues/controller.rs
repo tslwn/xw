@@ -44,7 +44,7 @@ async fn update(
 }
 
 #[delete("/clues/{id}")]
-async fn delete(id: web::Json<i32>, pool: web::Data<PgPool>) -> ApiResult<impl Responder> {
+async fn delete(id: web::Path<i32>, pool: web::Data<PgPool>) -> ApiResult<impl Responder> {
     let clue = Clue::delete(id.into_inner(), &mut *pool.acquire().await?).await?;
 
     Ok(HttpResponse::Ok().json(clue))

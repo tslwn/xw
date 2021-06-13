@@ -22,7 +22,10 @@ export async function client<TData, TError = unknown, TVariables = void>(
         },
         method,
       }
-    : { credentials, method };
+    : {
+        credentials,
+        method,
+      };
 
   // allow cancellation
   const controller = new AbortController();
