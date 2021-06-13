@@ -1,0 +1,20 @@
+@import '~@blueprintjs/core/lib/scss/variables';
+
+.update-clue-form {
+  padding: $pt-grid-size;
+}
+.update-clue-form__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.update-clue-form__heading {
+  align-items: center;
+  display: flex;
+  margin-bottom: $pt-grid-size * 1.5;
+  > h2 {
+    margin-bottom: 0;
+  }
+}
+.update-clue-form__back {
+  margin-left: auto;
+}

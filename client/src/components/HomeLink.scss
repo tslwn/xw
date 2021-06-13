@@ -1,0 +1,11 @@
+@import '~@blueprintjs/core/lib/scss/variables';
+
+$text-height: $pt-grid-size * 3;
+.home-link:hover {
+  text-decoration: none;
+}
+h3.home-link__text {
+  height: $text-height;
+  line-height: $text-height;
+  margin-bottom: 0;
+}

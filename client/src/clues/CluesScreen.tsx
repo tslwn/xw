@@ -1,11 +1,8 @@
-import { H2 } from '@blueprintjs/core';
 import * as React from 'react';
 import { useQueryClient } from 'react-query';
-import Layout from '../components/Layout';
 import QueryState from '../components/QueryState';
-import ClueCard from './ClueCard';
 import './CluesScreen.scss';
-import CreateClueForm from './CreateClueForm';
+import CluesTable from './CluesTable';
 import { queryKeys } from './clues-constants';
 import { useClues } from './clues-queries';
 
@@ -17,49 +14,33 @@ export default function CluesScreen() {
   switch (query.status) {
     case 'idle':
       return (
-        <Layout className="clues-screen">
-          <QueryState
-            onActionClick={() => {
-              query.refetch();
-            }}
-            status="idle"
-            title="No clues loaded."
-          />
-        </Layout>
+        <QueryState
+          onActionClick={() => {
+            query.refetch();
+          }}
+          status="idle"
+        />
       );
     case 'loading':
       return (
-        <Layout className="clues-screen">
-          <QueryState
-            onActionClick={() => {
-              queryClient.cancelQueries(queryKeys.clues);
-            }}
-            status="loading"
-            title="Loading clues..."
-          />
-        </Layout>
+        <QueryState
+          onActionClick={() => {
+            queryClient.cancelQueries(queryKeys.clues);
+          }}
+          status="loading"
+        />
       );
     case 'error':
       return (
-        <Layout className="clues-screen">
-          <QueryState
-            onActionClick={() => {
-              query.refetch();
-            }}
-            status="error"
-            title="An error occurred."
-          />
-        </Layout>
+        <QueryState
+          onActionClick={() => {
+            query.refetch();
+          }}
+          status="error"
+          title="An error occurred."
+        />
       );
     case 'success':
-      return (
-        <Layout className="clues-screen">
-          <H2>Clues</H2>
-          <CreateClueForm />
-          {query.data.map((clue) => (
-            <ClueCard clue={clue} key={clue.id} />
-          ))}
-        </Layout>
-      );
+      return <CluesTable clues={query.data} />;
   }
 }

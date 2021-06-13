@@ -20,8 +20,6 @@
     "@typescript-eslint/parser": "^4.26.0",
     "classnames": "^2.3.1",
     "eslint": "^7.28.0",
-    "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-import": "^2.23.4",
     "history": "^5.0.0",
     "msw": "^0.28.1",
     "react": "^17.0.2",
@@ -39,8 +37,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write **/*.{css,html,js,json,jsx,md,mdx,scss,ts,tsx,yml}",
-    "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx --fix ."
+    "format": "prettier --write"
   },
   "browserslist": {
     "production": [

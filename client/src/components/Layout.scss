@@ -1,7 +1,24 @@
 @import '~@blueprintjs/core/lib/scss/variables';
 
-.layout {
-  margin: $pt-grid-size * 4 auto;
-  max-width: 640px;
-  padding: 0 $pt-grid-size * 4;
+$xw-border: 1px solid $light-gray3;
+$xw-heading-height: $pt-grid-size * 5;
+.layout__body {
+  flex: 1;
+  overflow: auto;
+  padding: $pt-grid-size;
+}
+.layout__container {
+  display: flex;
+  height: calc(100vh - #{$xw-heading-height});
+}
+.layout__heading {
+  align-items: center;
+  display: flex;
+  border-bottom: $xw-border;
+  height: $xw-heading-height;
+  padding: 0 $pt-grid-size * 2;
+}
+.layout__sidebar {
+  border-right: $xw-border;
+  width: 25%;
 }

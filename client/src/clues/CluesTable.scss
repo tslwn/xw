@@ -1,0 +1,21 @@
+@import '~@blueprintjs/core/lib/scss/variables';
+
+$row-border-radius: $pt-grid-size / 2;
+.clues-table {
+  table-layout: fixed;
+  width: 100%;
+}
+.clues-table__answer {
+  width: 25%;
+}
+table.clues-table tbody tr:first-child td {
+  box-shadow: unset;
+}
+.clues-table td:first-child {
+  border-top-left-radius: $row-border-radius;
+  border-bottom-left-radius: $row-border-radius;
+}
+.clues-table td:last-child {
+  border-top-right-radius: $row-border-radius;
+  border-bottom-right-radius: $row-border-radius;
+}

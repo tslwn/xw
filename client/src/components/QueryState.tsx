@@ -3,19 +3,27 @@ import { IconNames } from '@blueprintjs/icons';
 import * as React from 'react';
 import './QueryState.scss';
 
-interface QueryState {
+interface QueryStateProps {
   onActionClick?: () => void;
   status: 'idle' | 'loading' | 'error';
-  title: string;
+  title?: string;
 }
 
-export default function Layout({ onActionClick, status, title }: QueryState) {
+export default function QueryState({
+  onActionClick,
+  status,
+  title,
+}: QueryStateProps) {
   switch (status) {
     case 'idle':
       return (
         <div className="query-state">
           <NonIdealState
-            action={<Button onClick={onActionClick}>Retry</Button>}
+            action={
+              <Button large minimal onClick={onActionClick}>
+                Retry
+              </Button>
+            }
             icon={IconNames.Offline}
             title={title}
           />
@@ -25,7 +33,11 @@ export default function Layout({ onActionClick, status, title }: QueryState) {
       return (
         <div className="query-state">
           <NonIdealState
-            action={<Button onClick={onActionClick}>Cancel</Button>}
+            action={
+              <Button large minimal onClick={onActionClick}>
+                Cancel
+              </Button>
+            }
             icon={<Spinner size={60} />}
             title={title}
           />
@@ -35,7 +47,11 @@ export default function Layout({ onActionClick, status, title }: QueryState) {
       return (
         <div className="query-state">
           <NonIdealState
-            action={<Button onClick={onActionClick}>Retry</Button>}
+            action={
+              <Button large minimal onClick={onActionClick}>
+                Retry
+              </Button>
+            }
             icon={IconNames.Error}
             title={title}
           />

@@ -38,13 +38,13 @@ export async function client<TData, TError = unknown, TVariables = void>(
   promise.cancel = () => controller.abort();
 
   return promise.then(async (response) => {
-    const body = await response.json();
-
     if (response.ok) {
-      return body as TData;
+      const body: TData = await response.json();
+      return body;
     }
 
-    return Promise.reject(body as TError);
+    const body: TError = await response.json();
+    return Promise.reject(body);
   });
 }
 
