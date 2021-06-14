@@ -7,9 +7,14 @@ const API_URL = process.env.REACT_APP_API_URL;
 const repository = cluesRepository();
 
 const handlers = [
-  rest.get(`${API_URL}/clues`, async (req, res, ctx) =>
-    res(ctx.json(repository.findAll()))
-  ),
+  rest.get(`${API_URL}/clues`, async (req, res, ctx) => {
+    const searchQuery = req.url.searchParams.get('search');
+
+    if (searchQuery === null) {
+      return res(ctx.json(repository.findAll()));
+    }
+    return res(ctx.json(repository.search(searchQuery)));
+  }),
   rest.get(`${API_URL}/clues/:id`, async (req, res, ctx) =>
     res(ctx.json(repository.findOne(Number(req.params.id))))
   ),

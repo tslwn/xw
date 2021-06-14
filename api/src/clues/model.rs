@@ -55,6 +55,26 @@ impl Clue {
         result
     }
 
+    pub async fn search(
+        search_query: &String,
+        conn: &mut PgConnection,
+    ) -> Result<Vec<Clue>, Error> {
+        let result = sqlx::query_as!(
+            Clue,
+            "
+                SELECT id, answer, clue, notes
+                FROM api.clue, websearch_to_tsquery($1) query
+                WHERE document @@ query
+                ORDER BY ts_rank_cd(document, query) DESC
+            ",
+            search_query
+        )
+        .fetch_all(conn)
+        .await;
+
+        result
+    }
+
     pub async fn find_by_id(id: i32, conn: &mut PgConnection) -> Result<Clue, Error> {
         let result = sqlx::query_as!(
             Clue,
@@ -138,7 +158,22 @@ mod tests {
 
         let clues = Clue::find_all(&mut tx).await.unwrap();
 
-        assert_eq!(clues.len(), 15);
+        assert_eq!(clues.len(), 30);
+
+        tx.rollback().await.unwrap();
+    }
+
+    #[actix_rt::test]
+    async fn searches_for_clues() {
+        let mut tx = get_transaction().await;
+
+        let clues = Clue::search(&String::from("orange"), &mut tx)
+            .await
+            .unwrap();
+
+        assert_eq!(clues.len(), 1);
+
+        assert_eq!(clues[0].clue, Some(String::from("Orange books in lift")));
 
         tx.rollback().await.unwrap();
     }

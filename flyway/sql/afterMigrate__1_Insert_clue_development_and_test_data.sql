@@ -1,6 +1,8 @@
 DO $$DECLARE env TEXT := '${env}';
 BEGIN
-  IF env IN ('development', 'test') AND NOT EXISTS (SELECT * FROM api.clue) THEN
+  IF env IN ('development', 'test') THEN
+    TRUNCATE api.clue;
+
     -- https://www.theguardian.com/crosswords/prize/28458
     INSERT INTO api.clue (answer, clue, notes) VALUES (
       'carroty',
@@ -76,6 +78,81 @@ BEGIN
       'choc ice',
       'Sweet plum filled with cream, originally',
       'CHO<C(ream)>ICE'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'papa',
+      'Father requiring pair of pears, oddly',
+      'PAPA(ya)'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'great ape',
+      'Feast in fruit for large animal',
+      'GR<EAT>APE'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'stable',
+      'Sturdy bill prodding fruit, first of oils extracted',
+      'S<TAB>L(o)E'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'Buchanan',
+      'US president with endless fruit: a good deal to eat, but no starter',
+      'B<(m)UCH>ANAN(a)'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'olives',
+      'Nothing is fruit',
+      '0 LIVES'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'Iran',
+      'Country importing really amaz­ing nectarines, primarily',
+      'I(mporting)/R(eally/A(mazing)/N(ectarines)'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'ephemeral',
+      'Passing hard prune stone, with Pepe''s bowels opening?',
+      '(p)EP(e) + H(ard)/EMERAL(d)'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'Seine',
+      'Date boxes in European river',
+      'SE<IN>E'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'Marat',
+      'David''s subject picking up some fruit, a rambutan',
+      'fruiT A RAMbutam (hidden rev)'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'Roman god',
+      'Staff pressing fruit for Bacchus, say?',
+      'RO<MANGO>D'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'boat race',
+      'Event finding seed in pear, we hear?',
+      'OAT in ‘brace’ (hom)'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'entail',
+      'Involve last of fruit in a line, stewed',
+      '(frui)T in A/LINE (anag)'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'Buddha',
+      'Spiritual teacher with friend had nuts',
+      'BUD + HAD (anag)'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'espy',
+      'See inexpensive fruits, cheap and nasty, ultimately',
+      '(inexpensiv)E/(fruit)S/(chea)P/(nast))Y'
+    );
+    INSERT INTO api.clue (answer, clue, notes) VALUES (
+      'duck',
+      'Dodge mandarin, for example',
+      'double def'
     );
   END IF;
 END$$;

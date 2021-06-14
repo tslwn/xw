@@ -6,9 +6,8 @@ import {
   TextArea,
 } from '@blueprintjs/core';
 import * as React from 'react';
-import { Navigate, useNavigate } from 'react-router';
-import Heading from '../components/Heading';
-import './CreateClueForm.scss';
+import { useNavigate } from 'react-router';
+import FormActions from '../components/FormActions';
 import { routes } from './clues-constants';
 import { Clue } from './clues-interfaces';
 import { useCreateClue } from './clues-mutations';
@@ -104,54 +103,52 @@ export default function CreateClueForm() {
   } = useCreateClueForm();
 
   return (
-    <div className="create-clue-form">
-      <form>
-        <FormGroup label="Answer" labelFor="answer">
-          <InputGroup
-            autoFocus
-            disabled={createMutation.isLoading}
-            id="answer"
-            onChange={handleAnswerChange}
-            value={state.answer}
-          />
-        </FormGroup>
-        <FormGroup label="Clue" labelFor="clue">
-          <InputGroup
-            disabled={createMutation.isLoading}
-            id="clue"
-            onChange={handleClueChange}
-            value={state.clue}
-          />
-        </FormGroup>
-        <FormGroup label="Notes" labelFor="notes">
-          <TextArea
-            disabled={createMutation.isLoading}
-            fill
-            id="notes"
-            onChange={handleNotesChange}
-            value={state.notes}
-          />
-        </FormGroup>
-        <div className="create-clue-form__actions">
-          <Button
-            disabled={!isValid}
-            intent={Intent.PRIMARY}
-            large
-            loading={createMutation.isLoading}
-            minimal
-            onClick={handleCreateClick}
-            text="Save"
-          />
-          <Button
-            disabled={createMutation.isLoading}
-            intent={Intent.DANGER}
-            large
-            minimal
-            onClick={handleCancelClick}
-            text="Cancel"
-          />
-        </div>
-      </form>
-    </div>
+    <form>
+      <FormGroup label="Answer" labelFor="answer">
+        <InputGroup
+          autoFocus
+          disabled={createMutation.isLoading}
+          id="answer"
+          onChange={handleAnswerChange}
+          value={state.answer}
+        />
+      </FormGroup>
+      <FormGroup label="Clue" labelFor="clue">
+        <InputGroup
+          disabled={createMutation.isLoading}
+          id="clue"
+          onChange={handleClueChange}
+          value={state.clue}
+        />
+      </FormGroup>
+      <FormGroup label="Notes" labelFor="notes">
+        <TextArea
+          disabled={createMutation.isLoading}
+          fill
+          id="notes"
+          onChange={handleNotesChange}
+          value={state.notes}
+        />
+      </FormGroup>
+      <FormActions>
+        <Button
+          disabled={!isValid}
+          intent={Intent.PRIMARY}
+          large
+          loading={createMutation.isLoading}
+          onClick={handleCreateClick}
+          outlined
+          text="Save"
+        />
+        <Button
+          disabled={createMutation.isLoading}
+          intent={Intent.DANGER}
+          large
+          onClick={handleCancelClick}
+          outlined
+          text="Cancel"
+        />
+      </FormActions>
+    </form>
   );
 }

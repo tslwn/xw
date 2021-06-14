@@ -1,11 +1,25 @@
 use super::{Clue, CreateClueDto, UpdateClueDto};
 use crate::api_result::ApiResult;
 use actix_web::{delete, get, post, put, web, HttpResponse, Responder};
+use serde::Deserialize;
 use sqlx::PgPool;
 
+#[derive(Debug, Deserialize)]
+pub struct CluesRequest {
+    search_query: Option<String>,
+}
+
 #[get("/clues")]
-async fn find_all(pool: web::Data<PgPool>) -> ApiResult<impl Responder> {
-    let clues = Clue::find_all(&mut *pool.acquire().await?).await?;
+async fn find_all(
+    query: web::Query<CluesRequest>,
+    pool: web::Data<PgPool>,
+) -> ApiResult<impl Responder> {
+    let conn = &mut *pool.acquire().await?;
+
+    let clues = match &query.search_query {
+        None => Clue::find_all(conn).await?,
+        Some(search_query) => Clue::search(search_query, conn).await?,
+    };
 
     Ok(HttpResponse::Ok().json(clues))
 }
@@ -19,10 +33,10 @@ async fn find_by_id(id: web::Path<i32>, pool: web::Data<PgPool>) -> ApiResult<im
 
 #[post("/clues")]
 async fn create(
-    clue: web::Json<CreateClueDto>,
+    create_clue_dto: web::Json<CreateClueDto>,
     pool: web::Data<PgPool>,
 ) -> ApiResult<impl Responder> {
-    let clue = Clue::create(clue.into_inner(), &mut *pool.acquire().await?).await?;
+    let clue = Clue::create(create_clue_dto.into_inner(), &mut *pool.acquire().await?).await?;
 
     Ok(HttpResponse::Ok().json(clue))
 }
@@ -30,12 +44,12 @@ async fn create(
 #[put("/clues/{id}")]
 async fn update(
     id: web::Path<i32>,
-    clue: web::Json<UpdateClueDto>,
+    update_clue_dto: web::Json<UpdateClueDto>,
     pool: web::Data<PgPool>,
 ) -> ApiResult<impl Responder> {
     let clue = Clue::update(
         id.into_inner(),
-        clue.into_inner(),
+        update_clue_dto.into_inner(),
         &mut *pool.acquire().await?,
     )
     .await?;

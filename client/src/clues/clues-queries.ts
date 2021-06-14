@@ -29,3 +29,14 @@ export function useClue(id: number, options?: UseQueryOptions<Clue>) {
     queryKey: queryKeys.clue(id),
   });
 }
+
+export function useSearchClues(
+  search?: string,
+  options?: UseQueryOptions<Clue[]>
+) {
+  return useQuery({
+    ...options,
+    queryFn: () => api.get<Clue[]>(uris.search(search)),
+    queryKey: queryKeys.search(search),
+  });
+}

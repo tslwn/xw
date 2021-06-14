@@ -15,7 +15,7 @@ export default function LargeButtonLink({
         className,
         Classes.BUTTON,
         Classes.LARGE,
-        Classes.MINIMAL
+        Classes.OUTLINED
       )}
       {...props}
     />

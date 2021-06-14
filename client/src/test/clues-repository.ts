@@ -11,6 +11,17 @@ export default function cluesRepository(initialClues = defaultClues) {
       return clues;
     },
 
+    // crude implementation somewhat like Postgres full-text search
+    search(searchQuery: string) {
+      const normalizedSearchQuery = searchQuery.toLowerCase();
+
+      return clues.filter(({ answer, clue, notes }) => {
+        const document = `${answer.toLowerCase()} ${clue?.toLowerCase()} ${notes?.toLowerCase()}`;
+
+        return document.includes(normalizedSearchQuery);
+      });
+    },
+
     findOne(id: number) {
       return clues.find((clue) => clue.id === id);
     },

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import clues from '../test/clues-data';
 import { rest, server } from '../test/setup-server';
 import {
   render,
@@ -36,10 +37,10 @@ test('it renders idle state', async () => {
 
   expect(screen.getByTitle(/offline/i)).toBeInTheDocument();
 
-  const button = screen.getByRole('button', { name: /retry/i });
+  const retryButton = screen.getByRole('button', { name: /retry/i });
 
-  // clicking retry should trigger refetch
-  userEvent.click(button);
+  // clicking retry should refetch query
+  userEvent.click(retryButton);
 
   await screen.findByTestId('spinner');
 });
@@ -48,6 +49,13 @@ test('it renders loading state', async () => {
   await renderCluesScreen();
 
   expect(screen.getByTestId('spinner')).toBeInTheDocument();
+
+  const cancelButton = screen.getByRole('button', { name: /cancel/i });
+
+  // clicking cancel should disable query
+  userEvent.click(cancelButton);
+
+  await screen.findByTitle(/offline/i);
 });
 
 test('it renders error state', async () => {
@@ -59,12 +67,12 @@ test('it renders error state', async () => {
 
   expect(screen.getByText(/an error occurred./i)).toBeInTheDocument();
 
-  const button = screen.getByRole('button', { name: /retry/i });
+  const retryButton = screen.getByRole('button', { name: /retry/i });
 
   server.resetHandlers();
 
-  // clicking retry should trigger refetch
-  userEvent.click(button);
+  // clicking retry should refetch query
+  userEvent.click(retryButton);
 
   await screen.findByTestId('spinner');
 });
@@ -74,16 +82,52 @@ test('it renders success state', async () => {
 
   await waitForElementToBeRemoved(() => screen.getByTestId('spinner'));
 
-  expect(screen.getByRole('heading', { name: /clues/i })).toBeInTheDocument();
+  expect(
+    screen.getByRole('textbox', { name: /search clues/i })
+  ).toBeInTheDocument();
 
-  const link = screen.getByRole('link', { name: /create/i });
+  const createLink = screen.getByRole('link', { name: /create/i });
 
-  expect(screen.getByText('carroty')).toBeInTheDocument();
+  // should return all rows
+  expect(screen.getAllByRole('row').length).toBe(clues.length);
 
-  expect(screen.getByText('Orange books in lift')).toBeInTheDocument();
+  clues.forEach(({ answer, clue }) => {
+    expect(screen.getByText(answer)).toBeInTheDocument();
+
+    if (clue !== undefined) {
+      expect(screen.getByText(clue)).toBeInTheDocument();
+    }
+  });
 
   // clicking link should navigate to "/new"
-  userEvent.click(link);
+  userEvent.click(createLink);
 
   await screen.findByRole('heading', { name: /somewhere else/i });
+});
+
+test('it searches for clues', async () => {
+  await renderCluesScreen();
+
+  await waitForElementToBeRemoved(() => screen.getByTestId('spinner'));
+
+  // should return all rows
+  expect(screen.getAllByRole('row').length).toBe(clues.length);
+
+  const searchInput = screen.getByRole('textbox', { name: /search clues/i });
+
+  // typing into search input should fetch new query
+  userEvent.type(searchInput, 'spare');
+
+  await screen.findByTestId('spinner');
+
+  await waitForElementToBeRemoved(() => screen.getByTestId('spinner'));
+
+  // should return one row only
+  expect(screen.getAllByRole('row').length).toBe(1);
+
+  expect(screen.getByText('spare')).toBeInTheDocument();
+
+  expect(
+    screen.getByText('Extra strawberries finally cut')
+  ).toBeInTheDocument();
 });

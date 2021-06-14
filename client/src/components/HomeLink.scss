@@ -5,6 +5,7 @@ $text-height: $pt-grid-size * 3;
   text-decoration: none;
 }
 h3.home-link__text {
+  color: $light-gray4;
   height: $text-height;
   line-height: $text-height;
   margin-bottom: 0;

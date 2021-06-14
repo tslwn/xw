@@ -1,15 +1,56 @@
-import { Classes, H2 } from '@blueprintjs/core';
+import { Classes, InputGroup } from '@blueprintjs/core';
+import { IconNames } from '@blueprintjs/icons';
 import * as React from 'react';
-import { useQueryClient } from 'react-query';
+import { useQueryClient, UseQueryResult } from 'react-query';
+import { useDebounce } from 'use-debounce';
 import Heading from '../components/Heading';
 import LargeButtonLink from '../components/LargeButtonLink';
 import QueryState from '../components/QueryState';
 import CluesTable from './CluesTable';
 import { queryKeys, routes } from './clues-constants';
-import { useClues } from './clues-queries';
+import { Clue } from './clues-interfaces';
+import { useSearchClues } from './clues-queries';
 
-function useCluesScreen() {
-  const query = useClues();
+interface CluesScreenBodyProps {
+  onCancel: () => void;
+  onRefetch: () => void;
+  query: UseQueryResult<Clue[]>;
+}
+
+function CluesScreenBody({ onCancel, onRefetch, query }: CluesScreenBodyProps) {
+  switch (query.status) {
+    case 'idle':
+      return <QueryState onActionClick={onRefetch} status="idle" />;
+    case 'loading':
+      return <QueryState onActionClick={onCancel} status="loading" />;
+    case 'error':
+      return (
+        <QueryState
+          onActionClick={onRefetch}
+          status="error"
+          title="An error occurred."
+        />
+      );
+    case 'success':
+      return <CluesTable clues={query.data} />;
+  }
+}
+
+const DEFAULT_MIN_SEARCH_LENGTH = 3;
+
+const DEFAULT_SEARCH_DELAY = 50;
+
+function useCluesScreen(
+  minSearchLength = DEFAULT_MIN_SEARCH_LENGTH,
+  searchDelay = DEFAULT_SEARCH_DELAY
+) {
+  const [search, setSearch] = React.useState('');
+
+  const [debouncedSearch] = useDebounce(search, searchDelay);
+
+  const query = useSearchClues(
+    debouncedSearch.length >= minSearchLength ? debouncedSearch : undefined
+  );
 
   const queryClient = useQueryClient();
 
@@ -21,46 +62,55 @@ function useCluesScreen() {
     queryClient.cancelQueries(queryKeys.clues);
   };
 
+  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback(
+    (event) => {
+      setSearch(event.target.value);
+    },
+    []
+  );
+
   return {
     handleCancel,
     handleRefetch,
+    handleSearchChange,
     query,
+    search,
   };
 }
 
 export default function CluesScreen() {
-  const { handleCancel, handleRefetch, query } = useCluesScreen();
+  const {
+    handleCancel,
+    handleRefetch,
+    handleSearchChange,
+    search,
+    query,
+  } = useCluesScreen();
 
-  switch (query.status) {
-    case 'idle':
-      return <QueryState onActionClick={handleRefetch} status="idle" />;
-    case 'loading':
-      return <QueryState onActionClick={handleCancel} status="loading" />;
-    case 'error':
-      return (
-        <QueryState
-          onActionClick={handleRefetch}
-          status="error"
-          title="An error occurred."
+  return (
+    <>
+      <Heading
+        right={
+          <LargeButtonLink className={Classes.INTENT_PRIMARY} to={routes.new}>
+            Create
+          </LargeButtonLink>
+        }
+      >
+        <InputGroup
+          aria-label="Search clues"
+          fill
+          leftIcon={IconNames.Search}
+          large
+          onChange={handleSearchChange}
+          placeholder="Search clues"
+          value={search}
         />
-      );
-    case 'success':
-      return (
-        <>
-          <Heading
-            right={
-              <LargeButtonLink
-                className={Classes.INTENT_PRIMARY}
-                to={routes.new}
-              >
-                Create
-              </LargeButtonLink>
-            }
-          >
-            <H2>Clues</H2>
-          </Heading>
-          <CluesTable clues={query.data} />
-        </>
-      );
-  }
+      </Heading>
+      <CluesScreenBody
+        onCancel={handleCancel}
+        onRefetch={handleRefetch}
+        query={query}
+      />
+    </>
+  );
 }

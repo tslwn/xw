@@ -1,6 +1,5 @@
 @import '~@blueprintjs/core/lib/scss/variables';
 
-$xw-border: 1px solid $light-gray3;
 $xw-heading-height: $pt-grid-size * 5;
 .layout__body {
   flex: 1;
@@ -13,12 +12,12 @@ $xw-heading-height: $pt-grid-size * 5;
 }
 .layout__heading {
   align-items: center;
+  background-color: $dark-gray5;
   display: flex;
-  border-bottom: $xw-border;
   height: $xw-heading-height;
   padding: 0 $pt-grid-size * 2;
 }
 .layout__sidebar {
-  border-right: $xw-border;
+  border-right: 1px solid $light-gray3;
   width: 25%;
 }

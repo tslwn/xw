@@ -8,9 +8,9 @@ import {
 } from '@blueprintjs/core';
 import * as React from 'react';
 import { useNavigate } from 'react-router';
+import FormActions from '../components/FormActions';
 import Heading from '../components/Heading';
 import LargeButtonLink from '../components/LargeButtonLink';
-import './UpdateClueForm.scss';
 import { routes } from './clues-constants';
 import { Clue } from './clues-interfaces';
 import { useDeleteClue, useUpdateClue } from './clues-mutations';
@@ -119,14 +119,14 @@ export default function UpdateClueForm({ clue }: ClueProps) {
           value={state.notes}
         />
       </FormGroup>
-      <div className="update-clue-form__actions">
+      <FormActions>
         <Button
           disabled={deleteMutation.isLoading || !isDirty}
           intent={Intent.PRIMARY}
           large
           loading={updateMutation.isLoading}
-          minimal
           onClick={handleSaveClick}
+          outlined
           text="Save"
         />
         <Button
@@ -134,11 +134,11 @@ export default function UpdateClueForm({ clue }: ClueProps) {
           intent={Intent.DANGER}
           large
           loading={deleteMutation.isLoading}
-          minimal
           onClick={handleDeleteClick}
+          outlined
           text="Delete"
         />
-      </div>
+      </FormActions>
     </form>
   );
 }

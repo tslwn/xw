@@ -1,6 +1,9 @@
 @import '~@blueprintjs/core/lib/scss/variables';
 
-.create-clue-form__actions {
+.form-actions {
   display: flex;
   justify-content: flex-end;
+  > * + * {
+    margin-left: $pt-grid-size;
+  }
 }

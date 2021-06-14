@@ -1,4 +1,3 @@
-import { Button } from '@blueprintjs/core';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import 'normalize.css';
 import * as React from 'react';
