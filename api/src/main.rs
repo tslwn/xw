@@ -1,7 +1,6 @@
 use actix_web::{web, App, HttpServer};
-use anyhow::Result;
+use anyhow::{Context, Result};
 use sqlx::PgPool;
-mod api_result;
 
 #[path = "clues/mod.rs"]
 mod clues;
@@ -14,7 +13,9 @@ async fn main() -> Result<()> {
 
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
-    let pool = PgPool::connect(&database_url).await?;
+    let pool = PgPool::connect(&database_url)
+        .await
+        .context("Failed to create connection pool")?;
 
     let _server = HttpServer::new(move || {
         App::new()
@@ -23,7 +24,8 @@ async fn main() -> Result<()> {
     })
     .bind(&api_url)?
     .run()
-    .await?;
+    .await
+    .context("Failed to start listening for incoming connections")?;
 
     Ok(())
 }

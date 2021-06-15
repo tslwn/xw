@@ -182,19 +182,20 @@ mod tests {
     async fn finds_clue_by_id() {
         let mut tx = get_transaction().await;
 
-        let id = 1;
+        let created_clue = Clue::create(
+            CreateClueDto {
+                answer: String::from("fairway"),
+                clue: Some(String::from("Blonde with a Yankee, not rough")),
+                notes: Some(String::from("FAIR/W(ith)/A/Y(ankee)")),
+            },
+            &mut tx,
+        )
+        .await
+        .unwrap();
 
-        let clue = Clue::find_by_id(id, &mut tx).await.unwrap();
+        let found_clue = Clue::find_by_id(created_clue.id, &mut tx).await.unwrap();
 
-        assert_eq!(
-            clue,
-            Clue {
-                id: id,
-                answer: String::from("carroty"),
-                clue: Some(String::from("Orange books in lift")),
-                notes: Some(String::from("CARR<O(ld)/T(estament)>Y")),
-            }
-        );
+        assert_eq!(found_clue, created_clue);
 
         tx.rollback().await.unwrap();
     }
@@ -215,9 +216,9 @@ mod tests {
         let mut tx = get_transaction().await;
 
         let create_clue_dto = CreateClueDto {
-            answer: String::from("papa"),
-            clue: Some(String::from("Father requiring pair of pears, oddly")),
-            notes: Some(String::from("PAPA(ya)")),
+            answer: String::from("fairway"),
+            clue: Some(String::from("Blonde with a Yankee, not rough")),
+            notes: Some(String::from("FAIR/W(ith)/A/Y(ankee)")),
         };
 
         let clue = Clue::create(create_clue_dto.clone(), &mut tx)
@@ -233,18 +234,30 @@ mod tests {
     async fn updates_clue() {
         let mut tx = get_transaction().await;
 
+        let created_clue = Clue::create(
+            CreateClueDto {
+                answer: String::from("fairway"),
+                clue: Some(String::from("Blonde with a Yankee, not rough")),
+                notes: Some(String::from("FAIR/W(ith)/A/Y(ankee)")),
+            },
+            &mut tx,
+        )
+        .await
+        .unwrap();
+
         let update_clue_dto = UpdateClueDto {
-            answer: Some(String::from("papa")),
-            clue: Some(String::from("Father requiring pair of pears, oddly")),
-            notes: Some(String::from("PAPA(ya)")),
+            answer: Some(String::from("outplay")),
+            clue: Some(String::from("Best expenses cover parking")),
+            notes: Some(String::from("OUT<P(arking)>LAY")),
         };
 
-        let returning = Clue::update(1, update_clue_dto.clone(), &mut tx)
+        let updated_clue = Clue::update(created_clue.id, update_clue_dto.clone(), &mut tx)
             .await
             .unwrap();
 
-        assert_eq!(returning.id, 1);
-        assert_eq!(UpdateClueDto::from(returning), update_clue_dto);
+        assert_eq!(updated_clue.id, created_clue.id);
+
+        assert_eq!(UpdateClueDto::from(updated_clue), update_clue_dto);
 
         tx.rollback().await.unwrap();
     }
@@ -270,11 +283,20 @@ mod tests {
     async fn deletes_clue() {
         let mut tx = get_transaction().await;
 
-        let clue = Clue::find_by_id(1, &mut tx).await.unwrap();
+        let created_clue = Clue::create(
+            CreateClueDto {
+                answer: String::from("fairway"),
+                clue: Some(String::from("Blonde with a Yankee, not rough")),
+                notes: Some(String::from("FAIR/W(ith)/A/Y(ankee)")),
+            },
+            &mut tx,
+        )
+        .await
+        .unwrap();
 
-        let result = Clue::delete(1, &mut tx).await.unwrap();
+        let deleted_clue = Clue::delete(created_clue.id, &mut tx).await.unwrap();
 
-        assert_eq!(result, clue);
+        assert_eq!(deleted_clue, created_clue);
 
         tx.rollback().await.unwrap();
     }
