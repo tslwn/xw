@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import clues from '../test/clues-data';
-import { rest, server } from '../test/setup-server';
+import data from '../../test/clues-data';
+import { rest, server } from '../../test/setup-server';
 import {
   render,
   screen,
   userEvent,
   waitForElementToBeRemoved,
-} from '../test/test-utils';
+} from '../../test/test-utils';
 import CluesScreen from './CluesScreen';
+import { paths } from './clues-paths';
 
 function SomewhereElse() {
   return <h1>Somewhere else</h1>;
@@ -16,10 +17,10 @@ function SomewhereElse() {
 
 function renderCluesScreen(options?: Parameters<typeof render>[1]) {
   return render(
-    <MemoryRouter initialEntries={['/clues']}>
+    <MemoryRouter initialEntries={[paths.clues]}>
       <Routes>
-        <Route path="/clues/new" element={<SomewhereElse />} />
-        <Route path="/clues" element={<CluesScreen />} />
+        <Route path={paths.create} element={<SomewhereElse />} />
+        <Route path={paths.clues} element={<CluesScreen />} />
       </Routes>
     </MemoryRouter>,
     options
@@ -89,9 +90,9 @@ test('it renders success state', async () => {
   const createLink = screen.getByRole('link', { name: /create/i });
 
   // should return all rows
-  expect(screen.getAllByRole('row').length).toBe(clues.length);
+  expect(screen.getAllByRole('row').length).toBe(data.length);
 
-  clues.forEach(({ answer, clue }) => {
+  data.forEach(({ answer, clue }) => {
     expect(screen.getByText(answer)).toBeInTheDocument();
 
     if (clue !== undefined) {
@@ -111,7 +112,7 @@ test('it searches for clues', async () => {
   await waitForElementToBeRemoved(() => screen.getByTestId('spinner'));
 
   // should return all rows
-  expect(screen.getAllByRole('row').length).toBe(clues.length);
+  expect(screen.getAllByRole('row').length).toBe(data.length);
 
   const searchInput = screen.getByRole('textbox', { name: /search clues/i });
 

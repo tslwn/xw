@@ -1,28 +1,28 @@
 import {
   Button,
   FormGroup,
+  H2,
   InputGroup,
   Intent,
   TextArea,
 } from '@blueprintjs/core';
 import * as React from 'react';
 import { useNavigate } from 'react-router';
-import FormActions from '../components/FormActions';
-import { routes } from './clues-constants';
+import FormActions from '../../components/FormActions';
+import Heading from '../../components/Heading';
+import LargeButtonLink from '../../components/LargeButtonLink';
 import { Clue } from './clues-interfaces';
-import { useCreateClue } from './clues-mutations';
+import { useDeleteClue, useUpdateClue } from './clues-mutations';
+import { paths } from './clues-paths';
 
-type State = Omit<Clue, 'id'>;
+type State = Omit<Clue, 'id' | 'answer'>;
 
 type Action =
-  | { type: 'SET_ANSWER'; payload: Clue['answer'] }
   | { type: 'SET_CLUE'; payload: Clue['clue'] }
   | { type: 'SET_NOTES'; payload: Clue['notes'] };
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
-    case 'SET_ANSWER':
-      return { ...state, answer: action.payload };
     case 'SET_CLUE':
       return { ...state, clue: action.payload };
     case 'SET_NOTES':
@@ -30,23 +30,10 @@ function reducer(state: State, action: Action) {
   }
 }
 
-const initialState = {
-  answer: '',
-  clue: '',
-  notes: '',
-};
-
-function useCreateClueForm() {
+function useUpdateClueForm({ answer, clue, id, notes }: Clue) {
   const navigate = useNavigate();
 
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-
-  const handleAnswerChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback(
-    (event) => {
-      dispatch({ payload: event.target.value, type: 'SET_ANSWER' });
-    },
-    []
-  );
+  const [state, dispatch] = React.useReducer(reducer, { clue, notes });
 
   const handleClueChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback(
     (event) => {
@@ -62,60 +49,60 @@ function useCreateClueForm() {
     []
   );
 
-  const isValid = state.answer !== '';
+  const isDirty = state.clue !== clue || state.notes !== notes;
 
-  const createMutation = useCreateClue({
-    onSuccess: ({ id }) => {
-      navigate(routes.clue(id));
+  const updateMutation = useUpdateClue(id);
+
+  const handleSaveClick = () => {
+    updateMutation.mutate({ answer, ...state });
+  };
+
+  const deleteMutation = useDeleteClue(id, {
+    onSuccess: () => {
+      navigate(paths.clues);
     },
   });
 
-  const handleCreateClick = () => {
-    createMutation.mutate(state);
-  };
-
-  const handleCancelClick = () => {
-    navigate(routes.clues);
+  const handleDeleteClick = () => {
+    deleteMutation.mutate();
   };
 
   return {
-    createMutation,
-    handleAnswerChange,
-    handleCancelClick,
-    handleCreateClick,
+    deleteMutation,
     handleClueChange,
+    handleDeleteClick,
     handleNotesChange,
-    isValid,
+    handleSaveClick,
+    isDirty,
     state,
+    updateMutation,
   };
 }
 
-export default function CreateClueForm() {
+interface ClueProps {
+  clue: Clue;
+}
+
+export default function UpdateClueForm({ clue }: ClueProps) {
   const {
-    createMutation,
-    handleAnswerChange,
-    handleCancelClick,
-    handleCreateClick,
+    deleteMutation,
     handleClueChange,
+    handleDeleteClick,
     handleNotesChange,
-    isValid,
+    handleSaveClick,
+    isDirty,
     state,
-  } = useCreateClueForm();
+    updateMutation,
+  } = useUpdateClueForm(clue);
 
   return (
     <form>
-      <FormGroup label="Answer" labelFor="answer">
-        <InputGroup
-          autoFocus
-          disabled={createMutation.isLoading}
-          id="answer"
-          onChange={handleAnswerChange}
-          value={state.answer}
-        />
-      </FormGroup>
+      <Heading right={<LargeButtonLink to={paths.clues}>Back</LargeButtonLink>}>
+        <H2>{clue.answer}</H2>
+      </Heading>
       <FormGroup label="Clue" labelFor="clue">
         <InputGroup
-          disabled={createMutation.isLoading}
+          disabled={deleteMutation.isLoading || updateMutation.isLoading}
           id="clue"
           onChange={handleClueChange}
           value={state.clue}
@@ -123,7 +110,7 @@ export default function CreateClueForm() {
       </FormGroup>
       <FormGroup label="Notes" labelFor="notes">
         <TextArea
-          disabled={createMutation.isLoading}
+          disabled={deleteMutation.isLoading || updateMutation.isLoading}
           fill
           id="notes"
           onChange={handleNotesChange}
@@ -132,21 +119,22 @@ export default function CreateClueForm() {
       </FormGroup>
       <FormActions>
         <Button
-          disabled={!isValid}
+          disabled={deleteMutation.isLoading || !isDirty}
           intent={Intent.PRIMARY}
           large
-          loading={createMutation.isLoading}
-          onClick={handleCreateClick}
+          loading={updateMutation.isLoading}
+          onClick={handleSaveClick}
           outlined
           text="Save"
         />
         <Button
-          disabled={createMutation.isLoading}
+          disabled={updateMutation.isLoading}
           intent={Intent.DANGER}
           large
-          onClick={handleCancelClick}
+          loading={deleteMutation.isLoading}
+          onClick={handleDeleteClick}
           outlined
-          text="Cancel"
+          text="Delete"
         />
       </FormActions>
     </form>

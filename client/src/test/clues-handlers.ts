@@ -1,5 +1,8 @@
 import { rest } from 'msw';
-import type { CreateClueDto, UpdateClueDto } from '../clues/clues-interfaces';
+import type {
+  CreateClueDto,
+  UpdateClueDto,
+} from '../features/clues/clues-interfaces';
 import cluesRepository from './clues-repository';
 
 const API_URL = process.env.REACT_APP_API_URL;

@@ -3,13 +3,14 @@ import { IconNames } from '@blueprintjs/icons';
 import * as React from 'react';
 import { useQueryClient, UseQueryResult } from 'react-query';
 import { useDebounce } from 'use-debounce';
-import Heading from '../components/Heading';
-import LargeButtonLink from '../components/LargeButtonLink';
-import QueryState from '../components/QueryState';
+import Heading from '../../components/Heading';
+import LargeButtonLink from '../../components/LargeButtonLink';
+import QueryState from '../../components/QueryState';
 import CluesTable from './CluesTable';
-import { queryKeys, routes } from './clues-constants';
 import { Clue } from './clues-interfaces';
+import { paths } from './clues-paths';
 import { useSearchClues } from './clues-queries';
+import { queryKeys } from './clues-query-keys';
 
 interface CluesScreenBodyProps {
   onCancel: () => void;
@@ -91,7 +92,7 @@ export default function CluesScreen() {
     <>
       <Heading
         right={
-          <LargeButtonLink className={Classes.INTENT_PRIMARY} to={routes.new}>
+          <LargeButtonLink className={Classes.INTENT_PRIMARY} to={paths.create}>
             Create
           </LargeButtonLink>
         }

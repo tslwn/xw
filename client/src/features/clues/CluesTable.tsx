@@ -2,19 +2,19 @@ import { HTMLTable, Text } from '@blueprintjs/core';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CluesTable.scss';
-import { routes } from './clues-constants';
 import { Clue } from './clues-interfaces';
+import { paths } from './clues-paths';
 
 function useCluesTable() {
   const navigate = useNavigate();
 
   const handleClueClick = (id: number) => (event: React.MouseEvent) => {
-    navigate(routes.clue(id));
+    navigate(paths.clue(id));
   };
 
   const handleClueKeyDown = (id: number) => (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
-      navigate(routes.clue(id));
+      navigate(paths.clue(id));
     }
   };
 

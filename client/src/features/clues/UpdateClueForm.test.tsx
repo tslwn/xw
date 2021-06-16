@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { render, screen, userEvent, waitFor } from '../test/test-utils';
+import { render, screen, userEvent, waitFor } from '../../test/test-utils';
 import UpdateClueForm from './UpdateClueForm';
-import { routes } from './clues-constants';
+import { paths } from './clues-paths';
 
 const clue = {
   id: 1,
@@ -23,7 +23,7 @@ function renderUpdateClueForm(options?: Parameters<typeof render>[1]) {
     <MemoryRouter initialEntries={[path]}>
       <Routes>
         <Route path={path} element={<UpdateClueForm clue={clue} />} />
-        <Route path={routes.clues} element={<Clues />} />
+        <Route path={paths.clues} element={<Clues />} />
       </Routes>
     </MemoryRouter>,
     options

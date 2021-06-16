@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { rest, server } from '../test/setup-server';
+import { rest, server } from '../../test/setup-server';
 import {
   render,
   screen,
   userEvent,
   waitForElementToBeRemoved,
-} from '../test/test-utils';
+} from '../../test/test-utils';
 import ClueScreen from './ClueScreen';
+import { paths } from './clues-paths';
 
 function renderClueScreen(id: number, options?: Parameters<typeof render>[1]) {
   return render(
-    <MemoryRouter initialEntries={[`/clues/${id}`]}>
+    <MemoryRouter initialEntries={[paths.clue(id)]}>
       <Routes>
-        <Route path="/clues/:id" element={<ClueScreen />} />
+        <Route path={paths.clue()} element={<ClueScreen />} />
       </Routes>
     </MemoryRouter>,
     options

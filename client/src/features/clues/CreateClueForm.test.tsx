@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
-import { render, screen, userEvent } from '../test/test-utils';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { render, screen, userEvent } from '../../test/test-utils';
 import CreateClueForm from './CreateClueForm';
+import { paths } from './clues-paths';
 
 function Clue() {
   return <div>I'm the clue screen</div>;
@@ -13,11 +14,11 @@ function Clues() {
 
 function renderCreateClueForm(options?: Parameters<typeof render>[1]) {
   return render(
-    <MemoryRouter initialEntries={['/clues/new']}>
+    <MemoryRouter initialEntries={[paths.create]}>
       <Routes>
-        <Route path="/clues/new" element={<CreateClueForm />} />
-        <Route path="/clues/:id" element={<Clue />} />
-        <Route path="/clues" element={<Clues />} />
+        <Route path={paths.create} element={<CreateClueForm />} />
+        <Route path={paths.clue()} element={<Clue />} />
+        <Route path={paths.clues} element={<Clues />} />
       </Routes>
     </MemoryRouter>,
     options

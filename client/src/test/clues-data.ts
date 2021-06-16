@@ -1,6 +1,6 @@
-import type { Clue } from '../clues/clues-interfaces';
+import type { Clue } from '../features/clues/clues-interfaces';
 
-const clues: Clue[] = [
+const data: Clue[] = [
   {
     id: 1,
     answer: 'carroty',
@@ -33,4 +33,4 @@ const clues: Clue[] = [
   },
 ];
 
-export default clues;
+export default data;

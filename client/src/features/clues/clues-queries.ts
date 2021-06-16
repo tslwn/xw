@@ -1,7 +1,8 @@
 import { UseQueryOptions, useQueryClient, useQuery } from 'react-query';
-import api from '../api-client';
-import { uris, queryKeys } from './clues-constants';
+import api from '../../utils/api-client';
 import { Clue } from './clues-interfaces';
+import { queryKeys } from './clues-query-keys';
+import { uris } from './clues-uris';
 
 export function useClues(options?: UseQueryOptions<Clue[]>) {
   const queryClient = useQueryClient();

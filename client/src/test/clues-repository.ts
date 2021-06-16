@@ -1,9 +1,13 @@
-import type { CreateClueDto, UpdateClueDto } from '../clues/clues-interfaces';
+import type {
+  CreateClueDto,
+  UpdateClueDto,
+} from '../features/clues/clues-interfaces';
 import defaultClues from './clues-data';
 
 export default function cluesRepository(initialClues = defaultClues) {
   let clues = initialClues;
 
+  // crude implementation somewhat like Postgres generated identity column
   let seq = clues.reduce((maxId, clue) => Math.max(maxId, clue.id), 1);
 
   return {

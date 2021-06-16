@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MemoryRouter, Route, Routes, useParams } from 'react-router-dom';
-import clues from '../test/clues-data';
-import { render, screen, userEvent } from '../test/test-utils';
+import data from '../../test/clues-data';
+import { render, screen, userEvent } from '../../test/test-utils';
 import CluesTable from './CluesTable';
 
 function Clue() {
@@ -17,7 +17,7 @@ function renderCluesTable(options?: Parameters<typeof render>[1]) {
     <MemoryRouter initialEntries={[path]}>
       <Routes>
         <Route path="/clues/:id" element={<Clue />} />
-        <Route path={path} element={<CluesTable clues={clues} />} />
+        <Route path={path} element={<CluesTable clues={data} />} />
       </Routes>
     </MemoryRouter>,
     options
@@ -27,7 +27,7 @@ function renderCluesTable(options?: Parameters<typeof render>[1]) {
 test('it renders', async () => {
   await renderCluesTable();
 
-  clues.forEach(({ answer, clue }) => {
+  data.forEach(({ answer, clue }) => {
     expect(screen.getByText(answer)).toBeInTheDocument();
 
     if (clue !== undefined) {
@@ -43,7 +43,7 @@ test('it navigates on click', async () => {
 
   userEvent.click(firstRow);
 
-  await screen.findByText(`Navigated to ID ${clues[0].id}`);
+  await screen.findByText(`Navigated to ID ${data[0].id}`);
 });
 
 test('it tabs to row and navigates on enter', async () => {
@@ -67,5 +67,5 @@ test('it tabs to row and navigates on enter', async () => {
 
   userEvent.type(document.activeElement, '{enter}');
 
-  await screen.findByText(`Navigated to ID ${clues[1].id}`);
+  await screen.findByText(`Navigated to ID ${data[1].id}`);
 });

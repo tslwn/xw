@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { useQueryClient } from 'react-query';
 import { useParams } from 'react-router';
-import QueryState from '../components/QueryState';
+import QueryState from '../../components/QueryState';
 import UpdateClueForm from './UpdateClueForm';
-import { queryKeys } from './clues-constants';
 import { useClue } from './clues-queries';
+import { queryKeys } from './clues-query-keys';
 
 function useClueScreen() {
-  const { id } = useParams();
+  const { id: encodedId } = useParams();
 
-  const query = useClue(Number(id));
+  const id = Number(decodeURIComponent(encodedId));
+
+  const query = useClue(id);
 
   const queryClient = useQueryClient();
 
@@ -18,7 +20,7 @@ function useClueScreen() {
   };
 
   const handleCancel = () => {
-    queryClient.cancelQueries(queryKeys.clue(Number(id)));
+    queryClient.cancelQueries(queryKeys.clue(id));
   };
 
   return {

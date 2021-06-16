@@ -1,7 +1,8 @@
 import { useMutation, UseMutationOptions, useQueryClient } from 'react-query';
-import api from '../api-client';
-import { queryKeys, uris } from './clues-constants';
+import api from '../../utils/api-client';
 import { Clue, CreateClueDto, UpdateClueDto } from './clues-interfaces';
+import { queryKeys } from './clues-query-keys';
+import { uris } from './clues-uris';
 
 export function useCreateClue(
   options?: UseMutationOptions<Clue, unknown, CreateClueDto>
