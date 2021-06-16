@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router';
 import FormActions from '../../components/FormActions';
 import Heading from '../../components/Heading';
 import LargeButtonLink from '../../components/LargeButtonLink';
+import { Toaster } from '../../utils/toaster';
 import { Clue } from './clues-interfaces';
 import { useDeleteClue, useUpdateClue } from './clues-mutations';
 import { paths } from './clues-paths';
@@ -51,14 +52,37 @@ function useUpdateClueForm({ answer, clue, id, notes }: Clue) {
 
   const isDirty = state.clue !== clue || state.notes !== notes;
 
-  const updateMutation = useUpdateClue(id);
+  const updateMutation = useUpdateClue(id, {
+    onError: () => {
+      Toaster.show({
+        intent: Intent.DANGER,
+        message: 'An error occurred.',
+      });
+    },
+    onSuccess: () => {
+      Toaster.show({
+        intent: Intent.SUCCESS,
+        message: 'Updated clue.',
+      });
+    },
+  });
 
   const handleSaveClick = () => {
     updateMutation.mutate({ answer, ...state });
   };
 
   const deleteMutation = useDeleteClue(id, {
+    onError: () => {
+      Toaster.show({
+        intent: Intent.DANGER,
+        message: 'An error occurred.',
+      });
+    },
     onSuccess: () => {
+      Toaster.show({
+        intent: Intent.SUCCESS,
+        message: 'Deleted clue.',
+      });
       navigate(paths.clues);
     },
   });

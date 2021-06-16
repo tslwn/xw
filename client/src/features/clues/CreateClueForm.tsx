@@ -8,6 +8,7 @@ import {
 import * as React from 'react';
 import { useNavigate } from 'react-router';
 import FormActions from '../../components/FormActions';
+import { Toaster } from '../../utils/toaster';
 import { Clue } from './clues-interfaces';
 import { useCreateClue } from './clues-mutations';
 import { paths } from './clues-paths';
@@ -65,7 +66,17 @@ function useCreateClueForm() {
   const isValid = state.answer !== '';
 
   const createMutation = useCreateClue({
+    onError: () => {
+      Toaster.show({
+        intent: Intent.DANGER,
+        message: 'An error occurred.',
+      });
+    },
     onSuccess: ({ id }) => {
+      Toaster.show({
+        intent: Intent.SUCCESS,
+        message: 'Created clue.',
+      });
       navigate(paths.clue(id));
     },
   });
