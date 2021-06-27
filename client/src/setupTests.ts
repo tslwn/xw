@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { act, configure } from '@testing-library/react';
 import { setLogger } from 'react-query';
-import { server } from './test/setup-server';
+import { server } from 'src/test/server';
 
 configure({ defaultHidden: true });
 
